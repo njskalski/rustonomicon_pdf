@@ -1,0 +1,19 @@
+language: rust 
+addons:
+  chrome: stable
+before_script:
+    - git submodule update
+    - cd third-party/nomicon/
+script:
+    - cargo install mdbook
+    - cargo install mdbook-pdf
+    - echo -e "\n\n[output.pdf]\n" >> book.toml
+    - mdbook build
+    
+deploy:
+    provider: releases
+    api_key: $GH_TOKEN
+    file: "/third-party/nomicon/book/pdf/output.pdf"
+    on:
+        tags: true
+    
